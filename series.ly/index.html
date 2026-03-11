@@ -157,6 +157,7 @@
             background: #1a242f;
             transition: transform 0.3s;
             display: block;
+            position: relative; /* Añadido para posicionar la etiqueta */
         }
 
         .tarjeta:hover, .tarjeta:focus {
@@ -166,6 +167,22 @@
         }
 
         .tarjeta img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- ETIQUETA DE SERIE --- */
+        .badge-serie {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--rojo-netflix);
+            color: white;
+            padding: 4px 8px;
+            font-size: 0.8em;
+            font-weight: bold;
+            border-radius: 4px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
 
         /* --- SMART TV --- */
         @media (min-width: 1200px) {
@@ -186,7 +203,7 @@
 <body>
 
     <header class="cabecera">
-        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        <button  class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
         <h1 style="font-size: 1.4em; letter-spacing: 2px;">PELISFLIX <span style="color: var(--rojo-netflix)">HD</span></h1>
         <div style="width: 40px;"></div>
     </header>
@@ -261,8 +278,14 @@
             const box = document.getElementById('contenedor-peliculas');
             box.innerHTML = '';
             lista.forEach(p => {
+                // Generar etiqueta de serie si corresponde
+                const etiqueta = (p.tipo && p.tipo.toLowerCase() === 'serie') 
+                    ? '<div class="badge-serie">Serie</div>' 
+                    : '';
+
                 box.innerHTML += `
                     <a href="detalle.html?titulo=${encodeURIComponent(p.titulo)}" class="tarjeta" tabindex="0">
+                        ${etiqueta}
                         <img src="${p.caratula}" alt="${p.titulo}" loading="lazy">
                     </a>`;
             });
